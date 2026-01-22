@@ -8,7 +8,6 @@
 </head>
 <body>
   <div id="app">
-    <!-- 初始弹窗 -->
     <div class="modal-backdrop" id="start-backdrop">
       <div class="modal">
         <div class="titlebar">
@@ -24,12 +23,12 @@
     <div id="popup-layer"></div>
   </div>
 
-  <!-- BGM -->
-  <audio id="bgMusic" preload="auto" loop></audio>
+  <!-- 音频 -->
+  <audio id="bgMusic" preload="auto" loop src="bg.mp3"></audio>
 
   <script>
   (() => {
-    /* ====== 节日配置 ====== */
+    /* ===== 节日配置（你原来的代码） ===== */
     const GF_BDAY = '12-15';
     const SOLAR_TERMS = {
       '02-04':['🌱','立春快乐'],'03-20':['🌸','春分快乐'],'05-05':['🌿','立夏快乐'],
@@ -40,28 +39,24 @@
       '02-14':['💘','情人节快乐'],'05-20':['💞','520快乐'],'07-07':['🌌','七夕快乐'],
       '10-31':['🎃','万圣节快乐'],'12-24':['🎅','平安夜快乐'],'12-25':['🎄','圣诞节快乐']
     };
-
     const pad = n => String(n).padStart(2,'0');
     const fmt = (m, d) => `${pad(m)}-${pad(d)}`;
     const today = new Date();
     const todayKey = fmt(today.getMonth() + 1, today.getDate());
-
     const week = ['日','一','二','三','四','五','六'];
     const dateStr = `${today.getFullYear()}年${today.getMonth()+1}月${today.getDate()}日 星期${week[today.getDay()]}`;
-
-    const DEFAULT = ['📅', dateStr + ' 今天也要开心哦','2025.11.7.mp3', dateStr + ' 神秘惊喜礼物📅','惊喜'];
+    const DEFAULT = ['📅', dateStr + ' 今天也要开心哦','bg.mp3', dateStr + ' 神秘惊喜礼物📅','惊喜'];
 
     function festPack() {
-      if (todayKey === GF_BDAY) return ['🎂','宝贝生日快乐','2025.11.7.mp3','神秘生日惊喜🎂','生日'];
+      if (todayKey === GF_BDAY) return ['🎂','宝贝生日快乐','bg.mp3','神秘生日惊喜🎂','生日'];
       for (let [k,v] of Object.entries(SOLAR_TERMS)) {
         const base = new Date(today.getFullYear(), Number(k.slice(0,2))-1, Number(k.slice(3)));
         for (let i=0;i<3;i++){ const cur=new Date(base); cur.setDate(base.getDate()+i);
-          if (fmt(cur.getMonth()+1,cur.getDate())===todayKey) return [v[0],v[1],'2025.11.7.mp3',`神秘${v[1]}${v[0]}`,v[1].slice(0,2)]; }
+          if (fmt(cur.getMonth()+1,cur.getDate())===todayKey) return [v[0],v[1],'bg.mp3',`神秘${v[1]}${v[0]}`,v[1].slice(0,2)]; }
       }
-      if (ONE_DAY[todayKey]) return [ONE_DAY[todayKey][0],ONE_DAY[todayKey][1],'2025.11.7.mp3',`神秘${ONE_DAY[todayKey][1]}${ONE_DAY[todayKey][0]}`,ONE_DAY[todayKey][1].slice(0,2)];
+      if (ONE_DAY[todayKey]) return [ONE_DAY[todayKey][0],ONE_DAY[todayKey][1],'bg.mp3',`神秘${ONE_DAY[todayKey][1]}${ONE_DAY[todayKey][0]}`,ONE_DAY[todayKey][1].slice(0,2)];
       return DEFAULT;
     }
-
     const [icon,title,bgmFile,pageTitle,giftWord] = festPack();
     document.getElementById('festIcon').textContent  = icon;
     document.getElementById('festTitle').textContent = title;
@@ -69,7 +64,7 @@
     document.getElementById('giftWord').textContent  = giftWord;
     document.getElementById('bgMusic').src           = bgmFile;
 
-    /* ====== 弹幕文案 ====== */
+    /* ===== 弹幕 ===== */
     const msgs = [
       '今天排位不连跪！','记得ban掉东皇~','记得躺好，不要掉队~','mvp 预定','野区我承包了',
       '兵线别漏掉','牛啊，牛啊','优势别上头','逆风稳住','早点睡，别通宵开黑',
@@ -80,7 +75,6 @@
     const anims  = ['anim-bottom','anim-top','anim-left','anim-right'];
     const layer  = document.getElementById('popup-layer');
     const rand   = arr => arr[Math.floor(Math.random()*arr.length)];
-
     let count = 0, total = 200, interval = 100;
     function addOne(){
       const {innerWidth:w,innerHeight:h} = window;
@@ -94,7 +88,7 @@
       if (count < total) setTimeout(addOne, interval);
     }
 
-    /* ======  iPhone Safari 安全播放 ====== */
+    /* =====  安全播放（Android+iOS 通用） ===== */
     document.getElementById('confirm-btn').addEventListener('click', () => {
       document.getElementById('start-backdrop').style.display = 'none';
 
@@ -104,15 +98,23 @@
 
       const play = () => audio.play().catch(() => {});
 
-      // 同步播：若元数据已到位直接播，否则等
-      if (audio.readyState >= 2) {
-        play();
+      // 微信/QQ 内嵌
+      if (window.WeixinJSBridge) {
+        WeixinJSBridge.invoke('getNetworkType', {}, play);
       } else {
-        audio.addEventListener('loadedmetadata', play, { once: true });
+        document.addEventListener('WeixinJSBridgeReady', () => {
+          WeixinJSBridge.invoke('getNetworkType', {}, play);
+        }, false);
+      }
+
+      // 普通浏览器
+      if (!window.WeixinJSBridge) {
+        if (audio.readyState >= 2) play();
+        else audio.addEventListener('loadedmetadata', play, { once:true });
       }
 
       addOne();
-    }, { once: true });
+    }, { once:true });
   })();
   </script>
 </body>
