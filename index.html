@@ -25,7 +25,8 @@
   </div>
 
   <!-- BGM -->
-  <audio id="bgMusic" preload="auto" loop></audio>
+  <!-- 🔥 1. 加 controls 方便调试；上线前可删掉 -->
+  <audio id="bgMusic" preload="auto" loop controls></audio>
 
   <script>
   (() => {
@@ -112,9 +113,13 @@
 
     document.getElementById('confirm-btn').addEventListener('click', () => {
       document.getElementById('start-backdrop').style.display = 'none';
+
       const audio = document.getElementById('bgMusic');
-      audio.muted = true; audio.play().catch(()=>{});
-      audio.muted = false; audio.play().catch(()=>{});
+
+      // 🔥 2. 用户手势后：先强制加载，再播放，避免任何自动播放拦截
+      audio.load();                                    // 重新解析文件
+      audio.play().catch(err => console.log('播放失败:', err));
+
       addOne();
     }, {once:true});
   })();
