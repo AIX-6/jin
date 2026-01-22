@@ -48,7 +48,7 @@
     const DEFAULT = ['📅', dateStr + ' 今天也要开心哦','bg.mp3', dateStr + ' 神秘惊喜礼物📅','惊喜'];
 
     function festPack() {
-      if (todayKey === GF_BDAY) return ['🎂','宝贝生日快乐','bg.mp3','神秘生日惊喜🎂','生日'];
+      if (todayKey === GF_BDAY) return ['🎂','宝贝生日快乐','2025.11.7.mp3','神秘生日惊喜🎂','生日'];
       for (let [k,v] of Object.entries(SOLAR_TERMS)) {
         const base = new Date(today.getFullYear(), Number(k.slice(0,2))-1, Number(k.slice(3)));
         for (let i=0;i<3;i++){ const cur=new Date(base); cur.setDate(base.getDate()+i);
