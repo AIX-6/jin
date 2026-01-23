@@ -24,7 +24,8 @@
     <div id="popup-layer"></div>
   </div>
 
-  
+  <!-- 无控件、隐藏的背景音频 -->
+  <audio id="bgMusic" preload="auto" loop style="display:none;"></audio>
 
   <script>
   (() => {
@@ -114,7 +115,7 @@
 
       const audio = document.getElementById('bgMusic');
 
-      // 🔥 2. 用户手势后：先强制加载，再播放，避免任何自动播放拦截
+      // 用户手势后：先强制加载，再播放，避免任何自动播放拦截
       audio.load();                                    // 重新解析文件
       audio.play().catch(err => console.log('播放失败:', err));
 
