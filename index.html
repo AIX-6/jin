@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>名侦探柯南</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+/*========== 原样式保持不变，仅新增/修改部分 ==========*/
+:root{
+  --accent:#ff0066;          /* 醒目玫红 */
+  --accent-dark:#c10050;
+}
+
+/* 通用 */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;line-height:1.6;color:#333;background:#fff}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+
+/* 导航 */
+.nav{display:flex;flex-wrap:wrap;align-items:center;background:#222}
+.nav a{flex:1;text-align:center;padding:12px 4px;color:#fff;font-size:clamp(14px,3vw,18px);transition:.3s}
+.nav a:hover,.nav a.active{background:#444}
+#nav-toggle{display:none}
+.hamburger{display:none;font-size:26px;color:#fff;padding:10px 15px;cursor:pointer}
+@media(max-width:600px){
+    .hamburger{display:block}
+    .nav{flex-direction:column;max-height:0;overflow:hidden;transition:max-height .3s}
+    #nav-toggle:checked + .nav{max-height:300px}
+}
+
+/* 标题 */
+.title{text-align:center;font-size:clamp(28px,5vw,42px);margin:20px 0;font-weight:bold}
+
+/* 主内容 */
+.main{display:flex;gap:20px;padding:20px 3%}
+.main_left,.main_right{flex:1}
+.main_left img{width:100%;height:auto;border-radius:8px}
+.msg{background:pink;color:#fff;text-align:center;font-size:clamp(18px,2.5vw,23px);line-height:1.4;padding:10px 0;margin-bottom:15px;border-radius:4px}
+.main_right p{font-size:clamp(16px,2vw,20px);margin-bottom:20px;letter-spacing:clamp(2px,.3vw,6px)}
+video{width:100%;height:auto;border-radius:6px}
+@media(max-width:768px){
+    .main{flex-direction:column}
+    .main_left,.main_right{width:100%}
+}
+
+/* 页脚 */
+.footer{text-align:center;padding:20px 10px;font-size:14px;color:#666;background:#f5f5f5}
+
+/*========== 只改下面这两个地方 ==========*/
+/* 1. 让“点我点我”按钮永远高对比 */
+.nav .btn-highlight{
+  background:var(--accent);
+  color:#fff;
+  font-weight:bold;
+  font-size:clamp(16px,3.5vw,22px);
+  animation:pulse 1.5s infinite;
+}
+.nav .btn-highlight:hover{
+  background:var(--accent-dark);
+}
+
+/* 2. 脉冲动画 */
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(255,0,102,.7)}
+  70%{box-shadow:0 0 0 10px rgba(255,0,102,0)}
+  100%{box-shadow:0 0 0 0 rgba(255,0,102,0)}
+}
+</style>
+</head>
+<body>
+<img src="images/banner (3).jpg" alt="柯南横幅" class="banner">
+
+<!-- 汉堡按钮 -->
+<label for="nav-toggle" class="hamburger">☰</label>
+<input type="checkbox" id="nav-toggle">
+<nav class="nav">
+    <a href="index.html" class="active">网站首页</a>
+    <a href="02 JUESE.html">角色介绍</a>
+    <!-- 只改这里：去掉内联样式，加 class -->
+    <a href="05.html" class="btn-highlight">点我点我</a>
+    <a href="04juchangban.html">剧场版推荐</a>
+    <a href="03XIANGC.html">图片相册</a>
+</nav>
+
+<h1 class="title">名侦探柯南</h1>
+<div class="main">
+    <div class="main_left">
+        <img src="images/banner.jpg" alt="柯南主视觉">
+    </div>
+    <div class="main_right">
+        <div class="msg">剧情简介①</div>
+        <p>江户川柯南，日本漫画《名侦探柯南》及其衍生作品中的男主角。真实身份是高中生侦探工藤新一，人称“平成年代的福尔摩斯”“日本警察的救世主”。因试图跟踪黑衣组织成员被偷袭，并被灌下代号“APTX4869”的毒药，虽然幸免于死，但身体缩小成一年级小学生的模样。</p>
+        <p>之后寻求阿笠博士的帮助，在被青梅竹马毛利兰询问自己名字时，化名为江户川柯南。在阿笠博士的提议下，寄住于小兰的父亲毛利小五郎家中，解决各种案件的同时秘密调查黑衣组织。</p>
+        <div class="msg">剧情简介②</div>
+        <video src="images/sp1.mp4" controls poster="images/t3.jpg"></video>
+    </div>
+</div>
+
+<footer class="footer">名侦探柯南 @ 版权所有-202308940211</footer>
+</body>
+</html>
